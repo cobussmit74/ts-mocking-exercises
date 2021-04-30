@@ -1,6 +1,6 @@
 import { Item } from "../dependencies/Item";
+import { PricingService } from "../dependencies/PricingService";
 import { ItemPriceAdjuster } from "../tests-to-implement/03_class_dependency_injected_into_sut";
-import { PricingServiceBuilder } from "./PricingServiceBuilder";
 
 describe('ItemPriceAdjuster', () => {
   describe('price is less than 100', () => {
@@ -14,10 +14,9 @@ describe('ItemPriceAdjuster', () => {
         price: 20
       };
 
-      const priceService = new PricingServiceBuilder()
-        .withMarkUpPerc(10)
-        .withMarkDownPerc(20)
-        .build();
+      const priceService = new PricingService()
+      spyOn(priceService, "getMarkUpPercentage").and.returnValue(10);
+      spyOn(priceService, "getMarkDownPercentage").and.returnValue(20);
       const sut = new ItemPriceAdjuster(priceService);
       // Act
       const actual = await sut.adjustPrice(item);
@@ -36,10 +35,10 @@ describe('ItemPriceAdjuster', () => {
         name: "Name 1",
         price: 150
       };
-      const priceService = new PricingServiceBuilder()
-        .withMarkUpPerc(10)
-        .withMarkDownPerc(20)
-        .build();
+
+      const priceService = new PricingService()
+      spyOn(priceService, "getMarkUpPercentage").and.returnValue(10);
+      spyOn(priceService, "getMarkDownPercentage").and.returnValue(20);
       const sut = new ItemPriceAdjuster(priceService);
       // Act
       const actual = await sut.adjustPrice(item);
@@ -49,7 +48,7 @@ describe('ItemPriceAdjuster', () => {
   })
 
   describe('price is equal to 100', () => {
-    xit('will not alter the price', async () => {
+    it('will not alter the price', async () => {
       // Arrange
       const item: Item = {
         id: "1",
@@ -58,10 +57,9 @@ describe('ItemPriceAdjuster', () => {
         name: "Name 1",
         price: 100
       };
-      const priceService = new PricingServiceBuilder()
-        .withMarkUpPerc(10)
-        .withMarkDownPerc(20)
-        .build();
+      const priceService = new PricingService()
+      spyOn(priceService, "getMarkUpPercentage").and.returnValue(10);
+      spyOn(priceService, "getMarkDownPercentage").and.returnValue(20);
       const sut = new ItemPriceAdjuster(priceService);
       // Act
       const actual = await sut.adjustPrice(item);

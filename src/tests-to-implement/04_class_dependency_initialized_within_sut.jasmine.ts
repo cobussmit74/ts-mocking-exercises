@@ -47,7 +47,7 @@ describe('ItemPriceAdjusterVersion2', () => {
   })
 
   describe('price is equal to 100', () => {
-    xit('will not alter the price', async () => {
+    it('will not alter the price', async () => {
       // Arrange
       const item: Item = {
         id: "1",
