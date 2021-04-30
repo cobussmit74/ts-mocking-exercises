@@ -1,5 +1,3 @@
-import { randomInteger } from "../tests-implemented/helpers/random"
-
 type Callback = (...params: any[]) => any
 
 export enum PubSubChannels {
@@ -22,12 +20,15 @@ export class PubSub {
   }
 
   async publish(channel: string, payload: unknown) {
-    console.log(`publishing ${JSON.stringify(payload)} on ${channel}`)
+    console.log(`publishing ${JSON.stringify(payload)} on ${channel}. ${this.subscriptions[channel].length} subscriptions`)
 
     for (const callback of this.subscriptions[channel]) {
+      const time = Math.floor((Math.random() * 50) + 100);
+      console.log(`will call the callback in ${time} milliseconds`);
       setTimeout(() => {
+        console.log("calling the callback");
         callback(payload)
-      }, randomInteger(100, 500))
+      }, time);
     }
   }
 
