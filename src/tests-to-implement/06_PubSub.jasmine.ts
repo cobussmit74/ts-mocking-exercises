@@ -5,30 +5,24 @@ describe('PubSub', () => {
     it('calls subscription callback when publish occurs on channel', async () => {
       // Arrange
       const spy = jasmine.createSpy();
-      const callPromise = listenForCall(spy);
+      const callPromise = new Promise<void>((resolve) => {
+        spy.and.callFake(() => {
+          resolve()
+        })
+      });
 
       const sut = new PubSub();
       // Act
       await sut.subscribe("test1", spy);
       await sut.publish("test1", "yum!");
 
-      setTimeout(() => { }, 0);
-
       await callPromise;
       expect(spy).toHaveBeenCalled();
     })
 
-    async function listenForCall(callback: jasmine.Spy) {
-      return new Promise<void>((resolve) => {
-        callback.and.callFake(() => {
-          resolve()
-        })
-      })
-    }
-
-    xit('calls all subscription callbacks when publish occurs on channel', async () => {
+    it('calls all subscription callbacks when publish occurs on channel', async () => {
       // Arrange
-      const sut = PubSub.getInstance();
+      const sut = new PubSub();
 
       var complete1 = createCallbackPromise(sut, "test2");
       var complete2 = createCallbackPromise(sut, "test2");

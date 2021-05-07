@@ -1,6 +1,10 @@
 import { generateDayMessage } from "../tests-to-implement/05_fake_timers";
 
 describe('generateDayMessage', () => {
+  afterEach(function () {
+    jasmine.clock().uninstall();
+  });
+
   it('returns a message containing the current time', () => {
     // Arrange
     const now = new Date(Date.parse("2021-04-05 15:33:17"));

@@ -1,7 +1,7 @@
-import { Item } from '../dependencies/Item'
-import { InMemoryCache } from '../dependencies/InMemoryCache'
-import { ItemRepository } from '../dependencies/ItemRepository'
-import { PubSub, PubSubChannels } from './06_PubSub'
+import { InMemoryCache } from "../dependencies/InMemoryCache";
+import { Item } from "../dependencies/Item";
+import { ItemRepository } from "../dependencies/ItemRepository";
+import { PubSub, PubSubChannels } from "./06_PubSub";
 
 export class ItemProcessor {
   private pubSub: PubSub
@@ -22,7 +22,7 @@ export class ItemProcessor {
     this.isProcessing = true
 
     const unprocessedItems = await this.getUnprocessedItems()
-    
+
     for (const item of unprocessedItems) {
       this.cache.update(item)
       this.pubSub.publish(PubSubChannels.itemUpdated, item)

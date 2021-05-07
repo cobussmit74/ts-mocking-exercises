@@ -20,13 +20,13 @@ export class PubSub {
   }
 
   async publish(channel: string, payload: unknown) {
-    console.log(`publishing ${JSON.stringify(payload)} on ${channel}. ${this.subscriptions[channel].length} subscriptions`)
+    console.log(`publishing ${JSON.stringify(payload)} on ${channel}. ${this.subscriptions[channel]?.length ?? 0} subscriptions`)
+
+    if (!this.subscriptions[channel]) return;
 
     for (const callback of this.subscriptions[channel]) {
       const time = Math.floor((Math.random() * 50) + 100);
-      console.log(`will call the callback in ${time} milliseconds`);
       setTimeout(() => {
-        console.log("calling the callback");
         callback(payload)
       }, time);
     }
