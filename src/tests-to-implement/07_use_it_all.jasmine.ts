@@ -55,29 +55,21 @@ describe('ItemProcessor', () => {
     };
   }
 
+  function createItem(itemNumber: number): Item {
+    return {
+      id: `${itemNumber}`,
+      name: `name ${itemNumber}`,
+      price: itemNumber * 111,
+      description: `description ${itemNumber}`,
+      created: new Date(),
+    }
+  }
+
   function createItems(): Item[] {
     return [
-      {
-        id: "1",
-        name: "name 1",
-        price: 111,
-        description: "description 1",
-        created: new Date(),
-      },
-      {
-        id: "2",
-        name: "name 2",
-        price: 222,
-        description: "description 2",
-        created: new Date(),
-      },
-      {
-        id: "3",
-        name: "name 3",
-        price: 333,
-        description: "description 3",
-        created: new Date(),
-      }
+      createItem(1),
+      createItem(2),
+      createItem(3),
     ]
   }
 
@@ -96,7 +88,7 @@ describe('ItemProcessor', () => {
     describe('given single unprocessed item', () => {
       it('updates the cache with the item', async () => {
         // Arrange
-        const item = createItems()[0];
+        const item = createItem(1);
 
         const { repo } = createItemRepo([item]);
         const { cache, updateSpy } = createMemoryCache();
@@ -110,7 +102,7 @@ describe('ItemProcessor', () => {
 
       it('publishes an item updated message', async () => {
         // Arrange
-        const item = createItems()[0];
+        const item = createItem(1);
 
         const { repo } = createItemRepo([item]);
         const { cache } = createMemoryCache();
@@ -144,8 +136,8 @@ describe('ItemProcessor', () => {
     describe('given newly added unprocessed items', () => {
       it('processes all newly added items every x seconds', async () => {
         // Arrange
-        const item1 = createItems()[0];
-        const item2 = createItems()[1];
+        const item1 = createItem(1);
+        const item2 = createItem(2);
         const allItems = [item1];
 
         const { repo } = createItemRepo(allItems);
