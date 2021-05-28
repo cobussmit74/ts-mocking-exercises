@@ -150,10 +150,12 @@ describe('ItemProcessor', () => {
         clock.install();
         await sut.processItems();
         allItems.push(item2);
-        await sut.processItems();
+
         clock.tick(5001);
         jasmine.clock().uninstall();
-        setTimeout(() => { }, 0);
+        await new Promise((resolve) => {
+          setTimeout(resolve, 0);
+        });
         // Assert
         expect(publishSpy).toHaveBeenCalledWith(PubSubChannels.itemUpdated, item2);
       })
